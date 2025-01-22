@@ -24,8 +24,7 @@ public class Event{
     private String cidade;
     private String uf;
 
-    public Event(String Id, String eventName, String cep) {
-        this.id = Id;
+    public Event( String eventName, String cep) {
         this.eventName = eventName;
         this.cep = cep;
     }

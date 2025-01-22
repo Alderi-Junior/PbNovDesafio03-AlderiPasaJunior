@@ -1,5 +1,6 @@
 package com.compass.mseventmanager.resources;
 
+import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -20,8 +23,10 @@ public class EventResource {
     private EventService eventService;
 
     @GetMapping(value = "/get-all-events")
-    public ResponseEntity<List<Event>> findAll() {
+    public ResponseEntity<List<EventDTO>> findAll() {
         List<Event> events = eventService.findAll();
-        return ResponseEntity.ok().body(events);
+        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTo);
     }
 }
+
