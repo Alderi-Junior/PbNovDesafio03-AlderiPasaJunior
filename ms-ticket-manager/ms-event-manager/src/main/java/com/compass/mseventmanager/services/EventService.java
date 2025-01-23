@@ -1,7 +1,6 @@
 package com.compass.mseventmanager.services;
 
 
-import com.compass.mseventmanager.client.Address;
 import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.repositories.AddressFeign;
@@ -64,14 +63,14 @@ public class EventService {
     }
 
     public Event fromDTO(EventDTO objDTO){
-        return new Event(objDTO.getId(), objDTO.getEventName(),objDTO.getLocalDateTime(),
+        return new Event(objDTO.getId(), objDTO.getEventName(),objDTO.getDateTime(),
                          objDTO.getCep(), objDTO.getLogradouro(), objDTO.getBairro(),
                          objDTO.getCidade(), objDTO.getUf());
     }
 
     private void updateData(Event newobj, Event obj) {
         newobj.setEventName(obj.getEventName());
-        newobj.setLocalDateTime(obj.getLocalDateTime());
+        newobj.setDateTime(obj.getDateTime());
         newobj.setCep(obj.getCep());
     }
 }

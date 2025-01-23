@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -14,7 +15,7 @@ public class EventDTO implements Serializable {
 
     private String id;
     private String eventName;
-    private Date LocalDateTime;
+    private LocalDateTime dateTime;
     private String cep;
     private String logradouro;
     private String bairro;
@@ -25,6 +26,7 @@ public class EventDTO implements Serializable {
     public EventDTO(Event event){
         this.id = event.getId();
         this.eventName = event.getEventName();
+        this.dateTime = event.getDateTime();
         this.cep = event.getCep();
         this.logradouro = event.getLogradouro();
         this.bairro = event.getBairro();
