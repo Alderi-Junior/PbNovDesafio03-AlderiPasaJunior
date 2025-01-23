@@ -6,6 +6,7 @@ import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.repositories.EventRepository;
 import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,6 @@ public class EventService {
     public List<Event> findAll() {
         return eventRepository.findAll();
     }
-
 
     public Event findById(String id){
         Optional<Event> event = eventRepository.findById(id);
@@ -47,6 +47,10 @@ public class EventService {
         }else {
             throw new ObjectNotFoundException("Objeto não encontrado");
         }
+    }
+
+    public List<Event> findAllWSort(){
+        return eventRepository.findAllByOrderByEventNameAsc();
     }
 
     public Event fromDTO(EventDTO objDTO){

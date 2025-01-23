@@ -35,6 +35,13 @@ public class EventResource {
         return ResponseEntity.ok().body(new EventDTO(event));
     }
 
+    @GetMapping(value = "/get-all-events-sorted")
+    public ResponseEntity<List<EventDTO>> findAllSorted() {
+        List<Event> events = eventService.findAllWSort();
+        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTo);
+    }
+
     @PostMapping(value = "/post-new-event")
     public ResponseEntity<Void> insert(@RequestBody EventDTO objDTO) {
         Event obj = eventService.fromDTO(objDTO);
