@@ -48,5 +48,14 @@ public class EventResource {
         eventService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/update-event/{id}")
+    public ResponseEntity<Void> update(@RequestBody EventDTO objDTO, @PathVariable String id) {
+        Event obj = eventService.fromDTO(objDTO);
+        obj.setId(id);
+        obj = eventService.update(obj);
+        return ResponseEntity.noContent().build();
+    }
+
 }
 
