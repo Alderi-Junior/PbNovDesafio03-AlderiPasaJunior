@@ -1,12 +1,13 @@
 package com.compass.mseventmanager.services;
 
 
+import com.compass.mseventmanager.client.Address;
 import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
+import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
 import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private AddressFeign addressFeign;
 
     public List<Event> findAll() {
         return eventRepository.findAll();
@@ -29,6 +32,13 @@ public class EventService {
     }
 
     public Event insert(Event obj){
+        var address = addressFeign.getAddress(obj.getCep());
+
+        obj.setLogradouro(address.logradouro());
+        obj.setBairro(address.bairro());
+        obj.setCidade(address.localidade());
+        obj.setUf(address.uf());
+
         return eventRepository.insert(obj);
     }
 
