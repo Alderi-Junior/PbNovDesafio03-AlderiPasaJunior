@@ -42,5 +42,11 @@ public class EventResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @DeleteMapping(value = "/delete-event/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        eventService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }
 

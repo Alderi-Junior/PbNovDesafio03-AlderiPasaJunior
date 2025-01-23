@@ -31,6 +31,11 @@ public class EventService {
         return eventRepository.insert(obj);
     }
 
+    public void delete(String id){
+        findById(id);
+        eventRepository.deleteById(id);
+    }
+
     public Event fromDTO(EventDTO objDTO){
         return new Event(objDTO.getId(), objDTO.getEventName(),objDTO.getLocalDateTime(), objDTO.getCep(),
                 objDTO.getLogradouro(), objDTO.getBairro(), objDTO.getCidade(), objDTO.getUf());
