@@ -48,5 +48,12 @@ public class TicketResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/update-ticket/{id}")
+    public ResponseEntity<Void> update(@RequestBody TicketDto ticketDto, @PathVariable String id) {
+        Ticket obj = ticketService.fromDTO(ticketDto);
+        obj.setTicketId(id);
+        obj = ticketService.update(obj);
+        return ResponseEntity.noContent().build();
+    }
 
 }
