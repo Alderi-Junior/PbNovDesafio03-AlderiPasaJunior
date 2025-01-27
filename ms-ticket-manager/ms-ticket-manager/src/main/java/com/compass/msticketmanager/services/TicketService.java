@@ -29,6 +29,11 @@ public class TicketService {
         return ticketRepository.insert(ticket);
     }
 
+    public void delete(String id) {
+        findById(id);
+        ticketRepository.deleteById(id);
+    }
+
     public Ticket fromDTO(TicketDto objDTO){
         return new Ticket(objDTO.getTicketId(), objDTO.getCustomerName(), objDTO.getCpf(),
                             objDTO.getCustomerMail(),objDTO.getEventId(), objDTO.getEventName(),

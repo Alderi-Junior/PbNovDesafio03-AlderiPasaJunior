@@ -42,5 +42,11 @@ public class TicketResource {
         return ResponseEntity.created(uri).build();
     }
 
+    @DeleteMapping(value = "/delete-ticket/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        ticketService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
