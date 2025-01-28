@@ -23,5 +23,7 @@ public class Ticket {
     private String eventName;
     private BigDecimal BRLamount;
     private BigDecimal USDamount;
+    private String status;
+    private Event eventDetails;
 
 }

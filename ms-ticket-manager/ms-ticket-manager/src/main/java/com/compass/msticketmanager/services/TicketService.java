@@ -1,14 +1,18 @@
 package com.compass.msticketmanager.services;
 
 import com.compass.msticketmanager.dto.TicketDto;
+import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
+import com.compass.msticketmanager.repositories.TicketClient;
 import com.compass.msticketmanager.repositories.TicketRepository;
 import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,8 @@ public class TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private TicketClient ticketClient;
 
     public List<Ticket> findAll() {
         return ticketRepository.findAll();
@@ -32,6 +38,27 @@ public class TicketService {
     }
 
     public Ticket insert(Ticket ticket) {
+        Event eventDetails;
+        if (ticket.getEventId() != null && !ticket.getEventId().isEmpty()) {
+            try {
+                eventDetails = ticketClient.getEventById(ticket.getEventId());
+                if (eventDetails == null || eventDetails.getEventName() == null) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event ID not found");
+                }
+                ticket.setEventName(eventDetails.getEventName());
+            } catch (FeignException.NotFound ex) {
+                throw new FeignException.NotFound(
+                        "Event ID not found: " + ticket.getEventId(), ex.request(), ex.content(), ex.responseHeaders()
+                );
+            }
+        } else if (ticket.getEventName() != null && !ticket.getEventName().isEmpty()) {
+            throw new IllegalArgumentException("Name search not working");
+        } else {
+            throw new IllegalArgumentException("Event ID or Event Name must be provided");
+        }
+
+        ticket.setEventDetails(eventDetails);
+        ticket.setStatus("Active");
         return ticketRepository.insert(ticket);
     }
 
@@ -54,8 +81,8 @@ public class TicketService {
 
     public Ticket fromDTO(TicketDto objDTO){
         return new Ticket(objDTO.getTicketId(), objDTO.getCustomerName(), objDTO.getCpf(),
-                            objDTO.getCustomerMail(),objDTO.getEventId(), objDTO.getEventName(),
-                            objDTO.getBRLamount(), objDTO.getUSDamount());
+                            objDTO.getCustomerMail(), objDTO.getEventId(), objDTO.getEventName(),
+                            objDTO.getBRLamount(), objDTO.getUSDamount(), objDTO.getStatus(), objDTO.getEventDetails());
     }
 
     public void updateData(Ticket newobj, Ticket obj){

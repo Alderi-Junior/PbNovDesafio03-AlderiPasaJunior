@@ -1,6 +1,7 @@
 package com.compass.msticketmanager.resources;
 
 import com.compass.msticketmanager.dto.TicketDto;
+import com.compass.msticketmanager.dto.TicketDtoResponse;
 import com.compass.msticketmanager.model.Ticket;
 import com.compass.msticketmanager.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +21,25 @@ public class TicketResource {
     private TicketService ticketService;
 
     @GetMapping(value = "/get-all-tickets")
-    public ResponseEntity<List<TicketDto>> findAll() {
+    public ResponseEntity<List<TicketDtoResponse>> findAll() {
         List<Ticket> tickets = ticketService.findAll();
-        List<TicketDto> ticketDtos = tickets.stream().map(t -> new TicketDto(t))
+        List<TicketDtoResponse> ticketDtos = tickets.stream().map(t -> new TicketDtoResponse(t))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(ticketDtos);
     }
 
     @GetMapping(value = "/get-ticket/{id}")
-    public ResponseEntity<TicketDto> findById(@PathVariable String id) {
+    public ResponseEntity<TicketDtoResponse> findById(@PathVariable String id) {
         Ticket ticket = ticketService.findById(id);
-        return ResponseEntity.ok().body(new TicketDto(ticket));
+        return ResponseEntity.ok().body(new TicketDtoResponse(ticket));
     }
 
     @GetMapping(value = "/get-ticket-by-cpf/{cpf}")
-    public ResponseEntity<List<TicketDto>> findByCpf(@PathVariable String cpf) {
+    public ResponseEntity<List<TicketDtoResponse>> findByCpf(@PathVariable String cpf) {
         List<Ticket> tickets = ticketService.findByCpf(cpf);
-        List<TicketDto> ticketDtos = tickets.stream()
-                .map(TicketDto::new)
+        List<TicketDtoResponse> ticketDtos = tickets.stream()
+                .map(TicketDtoResponse::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(ticketDtos);
     }
