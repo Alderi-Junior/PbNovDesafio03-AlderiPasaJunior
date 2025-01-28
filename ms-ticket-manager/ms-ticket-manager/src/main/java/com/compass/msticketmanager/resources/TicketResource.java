@@ -34,6 +34,15 @@ public class TicketResource {
         return ResponseEntity.ok().body(new TicketDto(ticket));
     }
 
+    @GetMapping(value = "/get-ticket-by-cpf/{cpf}")
+    public ResponseEntity<List<TicketDto>> findByCpf(@PathVariable String cpf) {
+        List<Ticket> tickets = ticketService.findByCpf(cpf);
+        List<TicketDto> ticketDtos = tickets.stream()
+                .map(TicketDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(ticketDtos);
+    }
+
     @PostMapping(value = "post-new-ticket")
     public ResponseEntity<Void> insert(@RequestBody TicketDto ticketDto) {
         Ticket obj = ticketService.fromDTO(ticketDto);

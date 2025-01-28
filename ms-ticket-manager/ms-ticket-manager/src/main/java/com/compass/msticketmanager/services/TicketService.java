@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,12 @@ public class TicketService {
     }
 
     public Ticket findById(String id){
-        Optional<Ticket> event = ticketRepository.findById(id);
-        return event.orElseThrow(() -> new ObjectNotFoundException("Object Not Found"));
+        Optional<Ticket> ticket = ticketRepository.findById(id);
+        return ticket.orElseThrow(() -> new ObjectNotFoundException("Object Not Found"));
+    }
+
+    public List<Ticket> findByCpf(String cpf) {
+        return ticketRepository.findByCpf(cpf);
     }
 
     public Ticket insert(Ticket ticket) {
