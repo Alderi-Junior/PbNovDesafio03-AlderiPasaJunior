@@ -44,6 +44,15 @@ public class TicketResource {
         return ResponseEntity.ok().body(ticketDtos);
     }
 
+    @GetMapping(value = "/check-tickets-by-event/{eventId}")
+    public ResponseEntity<List<TicketDtoResponse>> findByEvent(@PathVariable String eventId) {
+        List<Ticket> tickets = ticketService.findByEvent(eventId);
+        List<TicketDtoResponse> ticketDtos = tickets.stream()
+                .map(TicketDtoResponse::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().body(ticketDtos);
+    }
+
     @PostMapping(value = "post-new-ticket")
     public ResponseEntity<Void> insert(@RequestBody TicketDto ticketDto) {
         Ticket obj = ticketService.fromDTO(ticketDto);

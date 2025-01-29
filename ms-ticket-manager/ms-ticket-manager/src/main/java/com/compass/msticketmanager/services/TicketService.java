@@ -37,6 +37,28 @@ public class TicketService {
         return ticketRepository.findByCpf(cpf);
     }
 
+    public List<Ticket> findByEvent(String eventId) {
+        Event eventDetails;
+
+        if (eventId != null && !eventId.isEmpty()) {
+            try {
+                eventDetails = ticketClient.getEventById(eventId);
+
+                if (eventDetails == null || eventDetails.getEventName() == null) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event ID not found");
+                }
+            } catch (FeignException.NotFound ex) {
+                throw new FeignException.NotFound(
+                        "Event ID not found: " + eventId, ex.request(), ex.content(), ex.responseHeaders()
+                );
+            }
+        } else {
+            throw new IllegalArgumentException("Event ID must be provided");
+        }
+
+        return ticketRepository.findByEventId(eventId);
+    }
+
     public Ticket insert(Ticket ticket) {
         Event eventDetails;
         if (ticket.getEventId() != null && !ticket.getEventId().isEmpty()) {
