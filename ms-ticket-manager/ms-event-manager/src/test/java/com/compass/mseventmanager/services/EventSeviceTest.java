@@ -89,4 +89,10 @@ public class EventSeviceTest {
         assertNotNull(updatedEvent);
         assertEquals(event, updatedEvent);
     }
+
+    @Test
+    void testUpdate_NotFound() {
+        when(eventRepository.findById(anyString())).thenReturn(Optional.empty());
+        assertThrows(ObjectNotFoundException.class, () -> eventService.update(event));
+    }
 }
