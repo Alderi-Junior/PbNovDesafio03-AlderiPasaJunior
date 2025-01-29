@@ -3,6 +3,7 @@ package com.compass.msticketmanager.services;
 import com.compass.msticketmanager.dto.TicketDto;
 import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
+import com.compass.msticketmanager.repositories.TicketClient;
 import com.compass.msticketmanager.repositories.TicketRepository;
 import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,8 @@ public class TicketServiceTest {
     @Mock
     private TicketRepository ticketRepository;
 
+    @Mock
+    private TicketClient ticketClient;
 
     @InjectMocks
     private TicketService ticketService;
@@ -76,5 +79,16 @@ public class TicketServiceTest {
         assertEquals(1, tickets.size());
         assertEquals(ticket, tickets.get(0));
     }
-    
+
+    @Test
+    void testInsert() {
+        when(ticketClient.getEventById(anyString())).thenReturn(event);
+        when(ticketRepository.insert(any(Ticket.class))).thenReturn(ticket);
+
+        Ticket insertedTicket = ticketService.insert(ticket);
+
+        assertNotNull(insertedTicket);
+        assertEquals(ticket, insertedTicket);
+    }
+
 }
