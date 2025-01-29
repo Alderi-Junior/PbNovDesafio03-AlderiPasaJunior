@@ -95,4 +95,12 @@ public class EventSeviceTest {
         when(eventRepository.findById(anyString())).thenReturn(Optional.empty());
         assertThrows(ObjectNotFoundException.class, () -> eventService.update(event));
     }
+
+    @Test
+    void testFindAllWSort() {
+        when(eventRepository.findAllByOrderByEventNameAsc()).thenReturn(Arrays.asList(event));
+        List<Event> sortedEvents = eventService.findAllWSort();
+        assertEquals(1, sortedEvents.size());
+        assertEquals(event, sortedEvents.get(0));
+    }
 }
