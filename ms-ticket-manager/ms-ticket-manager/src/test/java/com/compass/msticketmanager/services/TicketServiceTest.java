@@ -4,6 +4,7 @@ import com.compass.msticketmanager.dto.TicketDto;
 import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
 import com.compass.msticketmanager.repositories.TicketRepository;
+import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -57,5 +58,12 @@ public class TicketServiceTest {
 
         assertNotNull(foundTicket);
         assertEquals(ticket, foundTicket);
+    }
+
+    @Test
+    void testFindById_NotFound() {
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(ObjectNotFoundException.class, () -> ticketService.findById("2"));
     }
 }
