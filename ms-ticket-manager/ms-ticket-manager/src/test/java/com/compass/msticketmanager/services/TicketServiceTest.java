@@ -66,4 +66,15 @@ public class TicketServiceTest {
 
         assertThrows(ObjectNotFoundException.class, () -> ticketService.findById("2"));
     }
+
+    @Test
+    void testFindByCpf() {
+        when(ticketRepository.findByCpf(anyString())).thenReturn(Arrays.asList(ticket));
+
+        var tickets = ticketService.findByCpf("12345678900");
+
+        assertEquals(1, tickets.size());
+        assertEquals(ticket, tickets.get(0));
+    }
+    
 }
