@@ -138,4 +138,13 @@ public class TicketServiceTest {
 
         assertThrows(ObjectNotFoundException.class, () -> ticketService.update(ticket));
     }
+
+    @Test
+    void testFromDTO() {
+        Ticket convertedTicket = ticketService.fromDTO(ticketDto);
+
+        assertNotNull(convertedTicket);
+        assertEquals(ticketDto.getTicketId(), convertedTicket.getTicketId());
+        assertEquals(ticketDto.getCustomerName(), convertedTicket.getCustomerName());
+    }
 }
