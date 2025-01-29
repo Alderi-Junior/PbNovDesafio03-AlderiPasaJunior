@@ -6,6 +6,8 @@ import com.compass.msticketmanager.model.Ticket;
 import com.compass.msticketmanager.repositories.TicketClient;
 import com.compass.msticketmanager.repositories.TicketRepository;
 import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
+import feign.FeignException;
+import feign.Request;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -89,6 +92,15 @@ public class TicketServiceTest {
 
         assertNotNull(insertedTicket);
         assertEquals(ticket, insertedTicket);
+    }
+
+    @Test
+    void testInsert_EventNotFound() {
+        Request request = Request.create(Request.HttpMethod.GET, "/events/1", new HashMap<>(), null, null, null);
+
+        when(ticketClient.getEventById(anyString())).thenThrow(new FeignException.NotFound("Event ID not found", request, null, null));
+
+        assertThrows(FeignException.NotFound.class, () -> ticketService.insert(ticket));
     }
 
 }
