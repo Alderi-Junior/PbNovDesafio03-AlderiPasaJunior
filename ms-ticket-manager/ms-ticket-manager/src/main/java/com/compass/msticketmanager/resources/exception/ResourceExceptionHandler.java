@@ -3,12 +3,11 @@ package com.compass.msticketmanager.resources.exception;
 import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.server.ResponseStatusException;
+
 
 @ControllerAdvice
 public class ResourceExceptionHandler {

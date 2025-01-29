@@ -63,8 +63,9 @@ public class TicketService {
     }
 
     public void delete(String id) {
-        findById(id);
-        ticketRepository.deleteById(id);
+        Ticket ticket = findById(id);
+        ticket.setStatus("Canceled");
+        ticketRepository.save(ticket);
     }
 
     @Transactional
