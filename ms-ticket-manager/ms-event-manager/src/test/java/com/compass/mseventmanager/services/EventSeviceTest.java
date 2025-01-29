@@ -32,7 +32,7 @@ public class EventSeviceTest {
     private EventService eventService;
 
     private Event event;
-    
+
     @Mock
     private AddressFeign addressFeign;
 
@@ -71,6 +71,14 @@ public class EventSeviceTest {
         Event insertedEvent = eventService.insert(event);
         assertNotNull(insertedEvent);
         assertEquals(event, insertedEvent);
+    }
+
+    @Test
+    void testDelete() {
+        when(eventRepository.findById(anyString())).thenReturn(Optional.of(event));
+        doNothing().when(eventRepository).deleteById(anyString());
+        assertDoesNotThrow(() -> eventService.delete("1"));
+        verify(eventRepository, times(1)).deleteById(anyString());
     }
 
 
