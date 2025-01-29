@@ -121,4 +121,15 @@ public class TicketServiceTest {
         verify(ticketRepository, times(1)).save(ticket);
         assertEquals("Canceled", ticket.getStatus());
     }
+
+    @Test
+    void testUpdate() {
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.of(ticket));
+        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
+
+        Ticket updatedTicket = ticketService.update(ticket);
+
+        assertNotNull(updatedTicket);
+        assertEquals(ticket, updatedTicket);
+    }
 }
