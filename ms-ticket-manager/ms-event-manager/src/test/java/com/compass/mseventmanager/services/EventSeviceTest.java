@@ -1,6 +1,7 @@
 package com.compass.mseventmanager.services;
 
 
+import com.compass.mseventmanager.client.Address;
 import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
@@ -31,6 +32,9 @@ public class EventSeviceTest {
     private EventService eventService;
 
     private Event event;
+    
+    @Mock
+    private AddressFeign addressFeign;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +62,15 @@ public class EventSeviceTest {
     void testFindById_NotFound() {
         when(eventRepository.findById(anyString())).thenReturn(Optional.empty());
         assertThrows(ObjectNotFoundException.class, () -> eventService.findById("2"));
+    }
+
+    @Test
+    void testInsert() {
+        when(addressFeign.getAddress(anyString())).thenReturn(new Address("Rua Teste", "Bairro Teste", "Cidade Teste", "UF"));
+        when(eventRepository.insert(any(Event.class))).thenReturn(event);
+        Event insertedEvent = eventService.insert(event);
+        assertNotNull(insertedEvent);
+        assertEquals(event, insertedEvent);
     }
 
 
