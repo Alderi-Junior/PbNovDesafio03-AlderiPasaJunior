@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -46,5 +47,15 @@ public class TicketServiceTest {
 
         assertEquals(1, tickets.size());
         assertEquals(ticket, tickets.get(0));
+    }
+
+    @Test
+    void testFindById() {
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.of(ticket));
+
+        Ticket foundTicket = ticketService.findById("1");
+
+        assertNotNull(foundTicket);
+        assertEquals(ticket, foundTicket);
     }
 }
