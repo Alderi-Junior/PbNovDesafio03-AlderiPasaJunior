@@ -4,6 +4,7 @@ package com.compass.mseventmanager.services;
 import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
+import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,5 +53,12 @@ public class EventSeviceTest {
         assertNotNull(foundEvent);
         assertEquals(event, foundEvent);
     }
+
+    @Test
+    void testFindById_NotFound() {
+        when(eventRepository.findById(anyString())).thenReturn(Optional.empty());
+        assertThrows(ObjectNotFoundException.class, () -> eventService.findById("2"));
+    }
+
 
 }
