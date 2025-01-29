@@ -103,4 +103,12 @@ public class TicketServiceTest {
         assertThrows(FeignException.NotFound.class, () -> ticketService.insert(ticket));
     }
 
+
+    @Test
+    void testInsert_InvalidData() {
+        Ticket invalidTicket = new Ticket("2", "Customer Name", "12345678900", "customer@mail.com", "", "", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", null);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ticketService.insert(invalidTicket));
+        assertEquals("Event ID or Event Name must be provided", exception.getMessage());
+    }
 }
