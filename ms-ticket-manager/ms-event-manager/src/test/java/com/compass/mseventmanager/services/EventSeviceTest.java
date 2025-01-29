@@ -81,5 +81,12 @@ public class EventSeviceTest {
         verify(eventRepository, times(1)).deleteById(anyString());
     }
 
-
+    @Test
+    void testUpdate() {
+        when(eventRepository.findById(anyString())).thenReturn(Optional.of(event));
+        when(eventRepository.save(any(Event.class))).thenReturn(event);
+        Event updatedEvent = eventService.update(event);
+        assertNotNull(updatedEvent);
+        assertEquals(event, updatedEvent);
+    }
 }
