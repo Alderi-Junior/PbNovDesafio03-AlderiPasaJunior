@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,6 +43,14 @@ public class EventSeviceTest {
         List<Event> events = eventService.findAll();
         assertEquals(1, events.size());
         assertEquals(event, events.get(0));
+    }
+
+    @Test
+    void testFindById() {
+        when(eventRepository.findById(anyString())).thenReturn(Optional.of(event));
+        Event foundEvent = eventService.findById("1");
+        assertNotNull(foundEvent);
+        assertEquals(event, foundEvent);
     }
 
 }
