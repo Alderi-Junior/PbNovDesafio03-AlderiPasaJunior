@@ -132,4 +132,10 @@ public class TicketServiceTest {
         assertNotNull(updatedTicket);
         assertEquals(ticket, updatedTicket);
     }
+    @Test
+    void testUpdate_NotFound() {
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(ObjectNotFoundException.class, () -> ticketService.update(ticket));
+    }
 }
