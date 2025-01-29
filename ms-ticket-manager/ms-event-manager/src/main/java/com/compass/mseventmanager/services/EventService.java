@@ -3,12 +3,16 @@ package com.compass.mseventmanager.services;
 
 import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
+import com.compass.mseventmanager.model.Ticket;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
+import com.compass.mseventmanager.repositories.TicketClient;
 import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +24,8 @@ public class EventService {
     private EventRepository eventRepository;
     @Autowired
     private AddressFeign addressFeign;
+    @Autowired
+    private TicketClient ticketClient;
 
     public List<Event> findAll() {
         return eventRepository.findAll();
@@ -42,7 +48,12 @@ public class EventService {
     }
 
     public void delete(String id){
-        findById(id);
+        List<Ticket> tickets = ticketClient.findTicketsByEvent(id);
+
+        if (!tickets.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot delete event with associated tickets.");
+        }
+
         eventRepository.deleteById(id);
     }
 
