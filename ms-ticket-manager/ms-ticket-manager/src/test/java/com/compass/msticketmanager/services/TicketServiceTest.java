@@ -111,4 +111,14 @@ public class TicketServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ticketService.insert(invalidTicket));
         assertEquals("Event ID or Event Name must be provided", exception.getMessage());
     }
+
+    @Test
+    void testDelete() {
+        when(ticketRepository.findById(anyString())).thenReturn(Optional.of(ticket));
+
+        ticketService.delete("1");
+
+        verify(ticketRepository, times(1)).save(ticket);
+        assertEquals("Canceled", ticket.getStatus());
+    }
 }
