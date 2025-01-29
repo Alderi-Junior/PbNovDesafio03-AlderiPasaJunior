@@ -3,9 +3,9 @@ package com.compass.mseventmanager.model;
 
 import lombok.*;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 
 import java.time.LocalDateTime;
 
@@ -31,5 +31,4 @@ public class Event{
         this.dateTime = dateTime;
 
     }
-
 }

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,8 @@ public class EventResource {
     @GetMapping(value = "/get-all-events")
     public ResponseEntity<List<EventDTO>> findAll() {
         List<Event> events = eventService.findAll();
-        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x)).collect(Collectors.toList());
+        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x))
+                .collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTo);
     }
 
@@ -38,7 +38,8 @@ public class EventResource {
     @GetMapping(value = "/get-all-events-sorted")
     public ResponseEntity<List<EventDTO>> findAllSorted() {
         List<Event> events = eventService.findAllWSort();
-        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x)).collect(Collectors.toList());
+        List<EventDTO> listDTo = events.stream().map(x -> new EventDTO(x))
+                .collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTo);
     }
 

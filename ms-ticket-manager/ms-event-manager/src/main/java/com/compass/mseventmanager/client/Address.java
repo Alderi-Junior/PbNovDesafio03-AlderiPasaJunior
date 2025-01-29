@@ -8,4 +8,8 @@ public record Address (
     String localidade,
     String uf
     )
-{}
+{
+    public Address(String logradouro, String bairro, String localidade, String uf) {
+        this(null, logradouro, bairro, localidade, uf);
+    }
+}
