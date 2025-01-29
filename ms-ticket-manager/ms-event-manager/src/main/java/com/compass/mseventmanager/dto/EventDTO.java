@@ -1,15 +1,16 @@
 package com.compass.mseventmanager.dto;
 
 import com.compass.mseventmanager.model.Event;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class EventDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -40,5 +41,4 @@ public class EventDTO implements Serializable {
         this.dateTime = dateTime;
         this.cep = cep;
         }
-
-    }
+}

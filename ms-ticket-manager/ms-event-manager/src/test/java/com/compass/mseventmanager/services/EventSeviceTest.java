@@ -2,6 +2,7 @@ package com.compass.mseventmanager.services;
 
 
 import com.compass.mseventmanager.client.Address;
+import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
@@ -102,5 +103,22 @@ public class EventSeviceTest {
         List<Event> sortedEvents = eventService.findAllWSort();
         assertEquals(1, sortedEvents.size());
         assertEquals(event, sortedEvents.get(0));
+    }
+
+    @Test
+    void testFromDTO() {
+        EventDTO eventDTO = new EventDTO("1", "Event Name", LocalDateTime.parse("2025-01-01T10:00:00"), "12345678", "Rua Teste", "Bairro Teste", "Cidade Teste", "UF");
+
+        Event event = eventService.fromDTO(eventDTO);
+
+        assertNotNull(event);
+        assertEquals(eventDTO.getId(), event.getId());
+        assertEquals(eventDTO.getEventName(), event.getEventName());
+        assertEquals(eventDTO.getDateTime(), event.getDateTime());
+        assertEquals(eventDTO.getCep(), event.getCep());
+        assertEquals(eventDTO.getLogradouro(), event.getLogradouro());
+        assertEquals(eventDTO.getBairro(), event.getBairro());
+        assertEquals(eventDTO.getCidade(), event.getCidade());
+        assertEquals(eventDTO.getUf(), event.getUf());
     }
 }
