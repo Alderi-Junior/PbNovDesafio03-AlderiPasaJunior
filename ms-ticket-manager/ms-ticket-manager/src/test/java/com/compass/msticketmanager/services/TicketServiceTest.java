@@ -121,6 +121,15 @@ public class TicketServiceTest {
     }
 
     @Test
+    void testInsert_InvalidEventName() {
+        ticket.setEventId(null);
+        ticket.setEventName("Invalid Event");
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ticketService.insert(ticket));
+        assertEquals("Name search not working", exception.getMessage());
+    }
+
+    @Test
     void testInsert_InvalidData() {
         Ticket invalidTicket = new Ticket("2", "Customer Name", "12345678900", "customer@mail.com", "", "", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", null);
 
