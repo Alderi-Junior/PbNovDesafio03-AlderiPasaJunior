@@ -4,7 +4,6 @@ package com.compass.mseventmanager.services;
 import com.compass.mseventmanager.client.Address;
 import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
-import com.compass.mseventmanager.model.Ticket;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
 import com.compass.mseventmanager.repositories.TicketClient;
@@ -16,9 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -94,7 +92,6 @@ public class EventSeviceTest {
     void testDelete_NoTickets() {
         when(ticketClient.findTicketsByEvent(event.getId())).thenReturn(Arrays.asList());
         eventService.delete(event.getId());
-
         verify(eventRepository, times(1)).deleteById(event.getId());
         verify(ticketClient, times(1)).findTicketsByEvent(event.getId());
     }
