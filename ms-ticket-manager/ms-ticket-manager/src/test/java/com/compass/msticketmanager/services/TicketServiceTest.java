@@ -101,6 +101,7 @@ public class TicketServiceTest {
         verify(ticketRepository, times(1)).insert(ticket);
     }
 
+
     @Test
     void testInsert_EventNotFound() {
         Request request = Request.create(Request.HttpMethod.GET, "/events/1", new HashMap<>(), null, null, null);
@@ -110,6 +111,14 @@ public class TicketServiceTest {
         assertThrows(FeignException.NotFound.class, () -> ticketService.insert(ticket));
     }
 
+    @Test
+    void testInsert_MissingEventIdAndName() {
+        ticket.setEventId(null);
+        ticket.setEventName(null);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ticketService.insert(ticket));
+        assertEquals("Event ID or Event Name must be provided", exception.getMessage());
+    }
 
     @Test
     void testInsert_InvalidData() {
