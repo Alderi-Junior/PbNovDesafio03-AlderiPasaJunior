@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 
@@ -19,11 +20,11 @@ public class Ticket {
     private String customerName;
     private String cpf;
     private String customerMail;
-    private String eventId;
-    private String eventName;
     private BigDecimal brlAmount;
     private BigDecimal usdAmount;
     private String status;
+    private String eventId;
+    private String eventName;
     private Event eventDetails;
 
 }

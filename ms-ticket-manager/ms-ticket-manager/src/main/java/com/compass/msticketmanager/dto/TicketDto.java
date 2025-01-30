@@ -21,11 +21,11 @@ public class TicketDto implements Serializable {
     private String customerName;
     private String cpf;
     private String customerMail;
-    private String eventId;
-    private String eventName;
     private BigDecimal brlAmount;
     private BigDecimal usdAmount;
     private String status;
+    private String eventId;
+    private String eventName;
     private Event eventDetails;
 
     public TicketDto(Ticket ticket) {
@@ -33,11 +33,11 @@ public class TicketDto implements Serializable {
         this.customerName = ticket.getCustomerName();
         this.cpf = ticket.getCpf();
         this.customerMail = ticket.getCustomerMail();
-        this.eventId = ticket.getEventId();
-        this.eventName = ticket.getEventName();
         this.brlAmount = ticket.getBrlAmount();
         this.usdAmount = ticket.getUsdAmount();
         this.status = ticket.getStatus();
+        this.eventId = ticket.getEventId();
+        this.eventName = ticket.getEventName();
         this.eventDetails = ticket.getEventDetails();
     }
 

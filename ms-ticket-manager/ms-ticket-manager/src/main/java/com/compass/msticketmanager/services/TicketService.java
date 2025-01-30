@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import feign.FeignException;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TicketService {
@@ -102,6 +104,7 @@ public class TicketService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting to JSON", e);
         }
+
         return ticketRepository.insert(ticket);
     }
 
@@ -125,9 +128,9 @@ public class TicketService {
 
     public Ticket fromDTO(TicketDto objDTO){
         return new Ticket(objDTO.getTicketId(), objDTO.getCustomerName(), objDTO.getCpf(),
-                            objDTO.getCustomerMail(), objDTO.getEventId(), objDTO.getEventName()
-                            ,objDTO.getBrlAmount(), objDTO.getUsdAmount(), objDTO.getStatus()
-                            ,objDTO.getEventDetails());
+                            objDTO.getCustomerMail(),objDTO.getBrlAmount(), objDTO.getUsdAmount(),
+                            objDTO.getStatus(),objDTO.getEventId(), objDTO.getEventName()
+                            , objDTO.getEventDetails());
     }
 
     public void updateData(Ticket newobj, Ticket obj){
