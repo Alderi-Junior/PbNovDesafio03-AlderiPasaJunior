@@ -114,6 +114,11 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    public void forceDelete(String id) {
+        Ticket ticket = findById(id);
+        ticketRepository.delete(ticket);
+    }
+
     @Transactional
     public Ticket update(Ticket obj) {
         Optional<Ticket> ticket = ticketRepository.findById(obj.getTicketId());

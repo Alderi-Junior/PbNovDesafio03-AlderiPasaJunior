@@ -69,6 +69,12 @@ public class TicketResource {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping(value = "/delete-ticket-with-event/{id}")
+    public ResponseEntity<Void> deleteWithEvent(@PathVariable String id) {
+        ticketService.forceDelete(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping(value = "/update-ticket/{id}")
     public ResponseEntity<Void> update(@RequestBody TicketDto ticketDto, @PathVariable String id) {
         Ticket obj = ticketService.fromDTO(ticketDto);
