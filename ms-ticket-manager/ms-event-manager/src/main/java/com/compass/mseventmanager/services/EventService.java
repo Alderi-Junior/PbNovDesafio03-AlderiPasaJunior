@@ -7,6 +7,7 @@ import com.compass.mseventmanager.model.Ticket;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
 import com.compass.mseventmanager.repositories.TicketClient;
+import com.compass.mseventmanager.services.exception.EventWithActiveTicketsException;
 import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class EventService {
 
     public Event findById(String id){
         Optional<Event> event = eventRepository.findById(id);
-        return event.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
+        return event.orElseThrow(() -> new ObjectNotFoundException("Object not found!"));
     }
 
     public Event insert(Event obj){
@@ -50,8 +51,17 @@ public class EventService {
     public void delete(String id){
         List<Ticket> tickets = ticketClient.findTicketsByEvent(id);
 
-        if (!tickets.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot delete event with associated tickets.");
+        boolean hasActiveTickets = tickets.stream().anyMatch(
+                ticket -> "Active".equals(ticket.getStatus()));
+
+        if (hasActiveTickets) {
+            throw new EventWithActiveTicketsException(
+                    "Cannot delete event with active tickets."
+            );
+        }
+
+        for (Ticket ticket : tickets) {
+            ticketClient.deleteTicket(ticket.getTicketId());
         }
 
         eventRepository.deleteById(id);
@@ -65,7 +75,7 @@ public class EventService {
             updateData(newobj,obj);
             return eventRepository.save(newobj);
         }else {
-            throw new ObjectNotFoundException("Objeto não encontrado");
+            throw new ObjectNotFoundException("Object not found!");
         }
     }
 
