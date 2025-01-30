@@ -24,11 +24,9 @@ public class TicketDtoResponse {
         this.customerName = ticket.getCustomerName();
         this.cpf = ticket.getCpf();
         this.customerMail = ticket.getCustomerMail();
-
         this.BRLamount = ticket.getBRLamount();
         this.USDamount = ticket.getUSDamount();
         this.status = ticket.getStatus();
         this.eventDetails = ticket.getEventDetails();
     }
-
 }

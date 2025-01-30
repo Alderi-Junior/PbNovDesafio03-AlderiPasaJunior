@@ -1,10 +1,18 @@
-spring.application.name=ms-ticket-manager
+spring:
+  application:
+    name: ms-ticket-manager
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db_ticket
 
-spring.data.mongodb.uri=mongodb://localhost:27017/db_ticket
+server:
+  port: 8091
 
-server.port= 8091
-
-spring.rabbitmq.addresses=amqps://wyhxtjcu:YBPL13_f8HtZtg1-2H0eadrCEMoV0fNH@duck.lmq.cloudamqp.com/wyhxtjcu
-spring.rabbitmq.queue=ms.ticket
-spring.rabbitmq.username=wyhxtjcu
-spring.rabbitmq.password=YBPL13_f8HtZtg1-2H0eadrCEMoV0fNH
+mq:
+  queues:
+    ms-ticket: ms-ticket

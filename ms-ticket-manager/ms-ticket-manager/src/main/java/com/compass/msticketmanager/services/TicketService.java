@@ -1,12 +1,17 @@
 package com.compass.msticketmanager.services;
 
 import com.compass.msticketmanager.dto.TicketDto;
+import com.compass.msticketmanager.dto.TicketDtoResponse;
+import com.compass.msticketmanager.infra.mqueue.TicketEmissionPublisher;
 import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
 import com.compass.msticketmanager.repositories.TicketClient;
 import com.compass.msticketmanager.repositories.TicketRepository;
 import com.compass.msticketmanager.services.exception.ObjectNotFoundException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import feign.FeignException;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,12 +22,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
     private TicketClient ticketClient;
+
+    private final TicketEmissionPublisher ticketEmissionPublisher;
+
 
     public List<Ticket> findAll() {
         return ticketRepository.findAll();
@@ -56,6 +65,7 @@ public class TicketService {
             throw new IllegalArgumentException("Event ID must be provided");
         }
 
+
         return ticketRepository.findByEventId(eventId);
     }
 
@@ -81,6 +91,15 @@ public class TicketService {
 
         ticket.setEventDetails(eventDetails);
         ticket.setStatus("Active");
+
+        TicketDto ticketDto = new TicketDto(ticket);
+
+        try {
+            ticketEmissionPublisher.publish(ticketDto);
+            System.out.println("Ticket enviado para a fila com sucesso!");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Erro ao converter ticket para JSON", e);
+        }
         return ticketRepository.insert(ticket);
     }
 

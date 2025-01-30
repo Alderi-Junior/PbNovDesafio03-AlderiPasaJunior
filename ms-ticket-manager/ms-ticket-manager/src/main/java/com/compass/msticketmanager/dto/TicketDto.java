@@ -2,6 +2,7 @@ package com.compass.msticketmanager.dto;
 
 import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TicketDto implements Serializable {
     private static final long serialVersionUID = 1L;
 

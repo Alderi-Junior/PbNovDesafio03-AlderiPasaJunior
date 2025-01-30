@@ -1,6 +1,7 @@
 package com.compass.msticketmanager.services;
 
 import com.compass.msticketmanager.dto.TicketDto;
+import com.compass.msticketmanager.infra.mqueue.TicketEmissionPublisher;
 import com.compass.msticketmanager.model.Event;
 import com.compass.msticketmanager.model.Ticket;
 import com.compass.msticketmanager.repositories.TicketClient;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -32,6 +34,9 @@ public class TicketServiceTest {
     @Mock
     private TicketClient ticketClient;
 
+    @Mock
+    private TicketEmissionPublisher ticketEmissionPublisher;
+
     @InjectMocks
     private TicketService ticketService;
 
@@ -41,7 +46,8 @@ public class TicketServiceTest {
 
     @BeforeEach
     void setUp() {
-        event = new Event("1", "Event Name", null, "", "", "", "", "");
+        MockitoAnnotations.openMocks(this);
+        event = new Event("1", "Event Name", "", "", "", "", "", "");
         ticket = new Ticket("1", "Customer Name", "12345678900", "customer@mail.com", "1", "Event Name", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", event);
         ticketDto = new TicketDto("1", "Customer Name", "12345678900", "customer@mail.com", "1", "Event Name", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", event);
     }
@@ -84,14 +90,15 @@ public class TicketServiceTest {
     }
 
     @Test
-    void testInsert() {
+    void testInsert_Success() {
         when(ticketClient.getEventById(anyString())).thenReturn(event);
         when(ticketRepository.insert(any(Ticket.class))).thenReturn(ticket);
 
         Ticket insertedTicket = ticketService.insert(ticket);
 
         assertNotNull(insertedTicket);
-        assertEquals(ticket, insertedTicket);
+        assertEquals("Active", insertedTicket.getStatus());
+        verify(ticketRepository, times(1)).insert(ticket);
     }
 
     @Test

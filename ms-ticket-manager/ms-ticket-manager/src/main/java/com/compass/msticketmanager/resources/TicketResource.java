@@ -23,8 +23,9 @@ public class TicketResource {
     @GetMapping(value = "/get-all-tickets")
     public ResponseEntity<List<TicketDtoResponse>> findAll() {
         List<Ticket> tickets = ticketService.findAll();
-        List<TicketDtoResponse> ticketDtos = tickets.stream().map(t -> new TicketDtoResponse(t))
-                .collect(Collectors.toList());
+        List<TicketDtoResponse> ticketDtos = tickets.stream().map
+                        (t -> new TicketDtoResponse(t))
+                       .collect(Collectors.toList());
 
         return ResponseEntity.ok().body(ticketDtos);
     }
@@ -57,7 +58,8 @@ public class TicketResource {
     public ResponseEntity<Void> insert(@RequestBody TicketDto ticketDto) {
         Ticket obj = ticketService.fromDTO(ticketDto);
         obj = ticketService.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getTicketId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getTicketId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
