@@ -21,8 +21,8 @@ public class Ticket {
     private String customerMail;
     private String eventId;
     private String eventName;
-    private BigDecimal BRLamount;
-    private BigDecimal USDamount;
+    private BigDecimal brlAmount;
+    private BigDecimal usdAmount;
     private String status;
     private Event eventDetails;
 

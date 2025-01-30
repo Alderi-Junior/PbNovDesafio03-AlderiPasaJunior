@@ -58,13 +58,13 @@ public class TicketService {
                 }
             } catch (FeignException.NotFound ex) {
                 throw new FeignException.NotFound(
-                        "Event ID not found: " + eventId, ex.request(), ex.content(), ex.responseHeaders()
+                        "Event ID not found: " + eventId, ex.request(), ex.content()
+                                ,ex.responseHeaders()
                 );
             }
         } else {
             throw new IllegalArgumentException("Event ID must be provided");
         }
-
 
         return ticketRepository.findByEventId(eventId);
     }
@@ -80,7 +80,8 @@ public class TicketService {
                 ticket.setEventName(eventDetails.getEventName());
             } catch (FeignException.NotFound ex) {
                 throw new FeignException.NotFound(
-                        "Event ID not found: " + ticket.getEventId(), ex.request(), ex.content(), ex.responseHeaders()
+                        "Event ID not found: " + ticket.getEventId(), ex.request(),
+                        ex.content(), ex.responseHeaders()
                 );
             }
         } else if (ticket.getEventName() != null && !ticket.getEventName().isEmpty()) {
@@ -88,17 +89,18 @@ public class TicketService {
         } else {
             throw new IllegalArgumentException("Event ID or Event Name must be provided");
         }
+        List<Ticket> idlist = ticketRepository.findByEventId(ticket.getEventId());
+        Integer idcount = idlist.size() + 1;
 
+        ticket.setTicketId(idcount.toString());
         ticket.setEventDetails(eventDetails);
         ticket.setStatus("Active");
-
         TicketDto ticketDto = new TicketDto(ticket);
 
         try {
             ticketEmissionPublisher.publish(ticketDto);
-            System.out.println("Ticket enviado para a fila com sucesso!");
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Erro ao converter ticket para JSON", e);
+            throw new RuntimeException("Error converting to JSON", e);
         }
         return ticketRepository.insert(ticket);
     }
@@ -123,16 +125,17 @@ public class TicketService {
 
     public Ticket fromDTO(TicketDto objDTO){
         return new Ticket(objDTO.getTicketId(), objDTO.getCustomerName(), objDTO.getCpf(),
-                            objDTO.getCustomerMail(), objDTO.getEventId(), objDTO.getEventName(),
-                            objDTO.getBRLamount(), objDTO.getUSDamount(), objDTO.getStatus(), objDTO.getEventDetails());
+                            objDTO.getCustomerMail(), objDTO.getEventId(), objDTO.getEventName()
+                            ,objDTO.getBrlAmount(), objDTO.getUsdAmount(), objDTO.getStatus()
+                            ,objDTO.getEventDetails());
     }
 
     public void updateData(Ticket newobj, Ticket obj){
         newobj.setCustomerName(obj.getCustomerName());
         newobj.setCpf(obj.getCpf());
         newobj.setCustomerMail(obj.getCustomerMail());
-        newobj.setBRLamount(obj.getBRLamount());
-        newobj.setUSDamount(obj.getUSDamount());
+        newobj.setBrlAmount(obj.getBrlAmount());
+        newobj.setUsdAmount(obj.getUsdAmount());
 
     }
 }

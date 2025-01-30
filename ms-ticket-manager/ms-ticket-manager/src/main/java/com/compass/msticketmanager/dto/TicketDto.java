@@ -23,8 +23,8 @@ public class TicketDto implements Serializable {
     private String customerMail;
     private String eventId;
     private String eventName;
-    private BigDecimal BRLamount;
-    private BigDecimal USDamount;
+    private BigDecimal brlAmount;
+    private BigDecimal usdAmount;
     private String status;
     private Event eventDetails;
 
@@ -35,8 +35,8 @@ public class TicketDto implements Serializable {
         this.customerMail = ticket.getCustomerMail();
         this.eventId = ticket.getEventId();
         this.eventName = ticket.getEventName();
-        this.BRLamount = ticket.getBRLamount();
-        this.USDamount = ticket.getUSDamount();
+        this.brlAmount = ticket.getBrlAmount();
+        this.usdAmount = ticket.getUsdAmount();
         this.status = ticket.getStatus();
         this.eventDetails = ticket.getEventDetails();
     }
@@ -46,8 +46,8 @@ public class TicketDto implements Serializable {
         this.customerName = ticket.getCustomerName();
         this.cpf = ticket.getCpf();
         this.customerMail = ticket.getCustomerMail();
-        this.BRLamount = ticket.getBRLamount();
-        this.USDamount = ticket.getUSDamount();
+        this.brlAmount = ticket.getBrlAmount();
+        this.usdAmount = ticket.getUsdAmount();
         this.status = ticket.getStatus();
         this.eventDetails = event;
 

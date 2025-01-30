@@ -14,8 +14,8 @@ public class TicketDtoResponse {
     private String customerName;
     private String cpf;
     private String customerMail;
-    private BigDecimal BRLamount;
-    private BigDecimal USDamount;
+    private BigDecimal brlAmount;
+    private BigDecimal usdAmount;
     private String status;
     private Event eventDetails;
 
@@ -24,8 +24,8 @@ public class TicketDtoResponse {
         this.customerName = ticket.getCustomerName();
         this.cpf = ticket.getCpf();
         this.customerMail = ticket.getCustomerMail();
-        this.BRLamount = ticket.getBRLamount();
-        this.USDamount = ticket.getUSDamount();
+        this.brlAmount = ticket.getBrlAmount();
+        this.usdAmount = ticket.getUsdAmount();
         this.status = ticket.getStatus();
         this.eventDetails = ticket.getEventDetails();
     }
