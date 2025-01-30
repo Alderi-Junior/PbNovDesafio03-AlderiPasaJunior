@@ -4,15 +4,19 @@ package com.compass.mseventmanager.services;
 import com.compass.mseventmanager.client.Address;
 import com.compass.mseventmanager.dto.EventDTO;
 import com.compass.mseventmanager.model.Event;
+import com.compass.mseventmanager.model.Ticket;
 import com.compass.mseventmanager.repositories.AddressFeign;
 import com.compass.mseventmanager.repositories.EventRepository;
+import com.compass.mseventmanager.repositories.TicketClient;
 import com.compass.mseventmanager.services.exception.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -37,9 +41,13 @@ public class EventSeviceTest {
     @Mock
     private AddressFeign addressFeign;
 
+    @Mock
+    private TicketClient ticketClient;
+
     @BeforeEach
     void setUp() {
-        event = new Event("1", "Event Name", LocalDateTime.parse("2025-01-01T10:00:00"), "12345678"
+        MockitoAnnotations.openMocks(this);
+        event = new Event("1", "Event Name", "2025-01-01T10:00:00", "12345678"
                         , "Rua Teste", "Bairro Teste", "Cidade Teste", "UF");
     }
 
@@ -75,11 +83,20 @@ public class EventSeviceTest {
     }
 
     @Test
-    void testDelete() {
-        when(eventRepository.findById(anyString())).thenReturn(Optional.of(event));
-        doNothing().when(eventRepository).deleteById(anyString());
-        assertDoesNotThrow(() -> eventService.delete("1"));
-        verify(eventRepository, times(1)).deleteById(anyString());
+    void testDelete_WithTickets() {
+        when(ticketClient.findTicketsByEvent(event.getId())).thenReturn(Arrays.asList());
+        eventService.delete(event.getId());
+        verify(eventRepository, times(1)).deleteById(event.getId());
+        verify(ticketClient, times(1)).findTicketsByEvent(event.getId());
+    }
+
+    @Test
+    void testDelete_NoTickets() {
+        when(ticketClient.findTicketsByEvent(event.getId())).thenReturn(Arrays.asList());
+        eventService.delete(event.getId());
+
+        verify(eventRepository, times(1)).deleteById(event.getId());
+        verify(ticketClient, times(1)).findTicketsByEvent(event.getId());
     }
 
     @Test
@@ -107,7 +124,7 @@ public class EventSeviceTest {
 
     @Test
     void testFromDTO() {
-        EventDTO eventDTO = new EventDTO("1", "Event Name", LocalDateTime.parse("2025-01-01T10:00:00"), "12345678", "Rua Teste", "Bairro Teste", "Cidade Teste", "UF");
+        EventDTO eventDTO = new EventDTO("1", "Event Name","2025-01-01T10:00:00", "12345678", "Rua Teste", "Bairro Teste", "Cidade Teste", "UF");
 
         Event event = eventService.fromDTO(eventDTO);
 

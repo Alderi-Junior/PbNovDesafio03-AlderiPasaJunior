@@ -18,14 +18,14 @@ public class Event{
     @Id
     private String id;
     private String eventName;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String cep;
     private String logradouro;
     private String bairro;
     private String cidade;
     private String uf;
 
-    public Event(String eventName, LocalDateTime dateTime, String cep) {
+    public Event(String eventName, String dateTime, String cep) {
         this.eventName = eventName;
         this.cep = cep;
         this.dateTime = dateTime;

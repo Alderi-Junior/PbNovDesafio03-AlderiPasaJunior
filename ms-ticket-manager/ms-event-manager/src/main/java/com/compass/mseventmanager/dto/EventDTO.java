@@ -16,7 +16,7 @@ public class EventDTO implements Serializable {
 
     private String id;
     private String eventName;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String cep;
     private String logradouro;
     private String bairro;
@@ -35,7 +35,7 @@ public class EventDTO implements Serializable {
         this.uf = event.getUf();
     }
 
-    public EventDTO(String id, String eventName, LocalDateTime dateTime, String cep) {
+    public EventDTO(String id, String eventName, String dateTime, String cep) {
         this.id = id;
         this.eventName = eventName;
         this.dateTime = dateTime;
