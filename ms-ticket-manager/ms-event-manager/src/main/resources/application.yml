@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ms-event-manager
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db_event
+      username: admin
+      password: admin
+
+server:
+  port: 8090
