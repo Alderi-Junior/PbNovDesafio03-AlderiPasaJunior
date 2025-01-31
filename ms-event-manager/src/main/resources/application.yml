@@ -3,7 +3,13 @@ spring:
     name: ms-event-manager
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db_event
+      uri: ${SPRING_DATA_MONGODB_URI}
+      #uri: mongodb://localhost:27017/db_ticket
 
 
-  #uri: mongodb://localhost:27017/db_ticket
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+

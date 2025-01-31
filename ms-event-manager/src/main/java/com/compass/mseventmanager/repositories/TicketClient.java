@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "ticket-service", url = "http://localhost:8091/tickets/")
+@FeignClient(name = "ticket-service", url = "${TICKET}")
 public interface TicketClient {
     @GetMapping("/check-tickets-by-event/{eventId}")
     List<Ticket> findTicketsByEvent(@PathVariable("eventId") String eventId);
