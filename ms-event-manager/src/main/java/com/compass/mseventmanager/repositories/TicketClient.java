@@ -10,9 +10,9 @@ import java.util.List;
 
 @FeignClient(name = "ticket-service", url = "${msticket.tickets.ticket}")
 public interface TicketClient {
-    @GetMapping("events/check-tickets-by-event/{eventId}")
+    @GetMapping("tickets/check-tickets-by-event/{eventId}")
     List<Ticket> findTicketsByEvent(@PathVariable("eventId") String eventId);
 
-    @DeleteMapping("events/delete-ticket-with-event/{id}")
+    @DeleteMapping("tickets/delete-ticket-with-event/{id}")
     void deleteTicket(@PathVariable("id") String ticketId);
 }
