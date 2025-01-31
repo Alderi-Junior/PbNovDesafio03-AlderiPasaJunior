@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "ticket-service", url = "${TICKET}")
+@FeignClient(name = "ticket-service", url = "${msticket.tickets.ticket}")
 public interface TicketClient {
-    @GetMapping("/check-tickets-by-event/{eventId}")
+    @GetMapping("events/check-tickets-by-event/{eventId}")
     List<Ticket> findTicketsByEvent(@PathVariable("eventId") String eventId);
 
-    @DeleteMapping("/delete-ticket-with-event/{id}")
+    @DeleteMapping("events/delete-ticket-with-event/{id}")
     void deleteTicket(@PathVariable("id") String ticketId);
 }
