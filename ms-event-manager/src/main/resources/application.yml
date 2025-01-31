@@ -3,9 +3,7 @@ spring:
     name: ms-event-manager
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db_event
-      username: admin
-      password: admin
+      uri: mongodb://localhost:27017/db_ticket
 
-server:
-  port: 8090
+
+  #uri: mongodb://localhost:27017/db_ticket

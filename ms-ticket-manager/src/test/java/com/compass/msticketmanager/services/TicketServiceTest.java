@@ -48,8 +48,8 @@ public class TicketServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         event = new Event("1", "Event Name", "", "", "", "", "", "");
-        ticket = new Ticket("1", "Customer Name", "12345678900", "customer@mail.com", "1", "Event Name", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", event);
-        ticketDto = new TicketDto("1", "Customer Name", "12345678900", "customer@mail.com", "1", "Event Name", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", event);
+        ticket = new Ticket("1", "Customer Name", "12345678900", "customer@mail.com", BigDecimal.valueOf(100.00),  BigDecimal.valueOf(50.00),"Active" , "1","Active", event);
+        ticketDto = new TicketDto("1", "Customer Name", "12345678900", "customer@mail.com", BigDecimal.valueOf(100.00),  BigDecimal.valueOf(50.00),"Active","1", "Active", event);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class TicketServiceTest {
 
     @Test
     void testInsert_InvalidData() {
-        Ticket invalidTicket = new Ticket("2", "Customer Name", "12345678900", "customer@mail.com", "", "", BigDecimal.valueOf(100.00), BigDecimal.valueOf(50.00), "Active", null);
+        Ticket invalidTicket = new Ticket("2", "Customer Name", "12345678900", "customer@mail.com", BigDecimal.valueOf(100.00),BigDecimal.valueOf(50.00),"Active ","" , "", null);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ticketService.insert(invalidTicket));
         assertEquals("Event ID or Event Name must be provided", exception.getMessage());
