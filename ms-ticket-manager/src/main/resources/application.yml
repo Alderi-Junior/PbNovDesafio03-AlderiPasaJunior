@@ -11,11 +11,18 @@ spring:
     password: guest
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db_ticket
-    #uri: ${SPRING_DATA_MONGODB_URI}
+      uri: ${SPRING_DATA_MONGODB_URI}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
 mq:
   queues:
     ms-ticket: ms-ticket
 
 server:
   port: 8081
+
