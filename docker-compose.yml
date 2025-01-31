@@ -45,6 +45,7 @@ services:
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://admin:admin@mongodb:27017/db_event?authSource=admin
       - TICKET=http://ms-ticket-manager:8081
+      #- EVENT_SERVICE_URL=http://ms-ticket-manager:8081
     ports:
       - "8080:8080"
     logging:
@@ -67,6 +68,7 @@ services:
       - RABBIT_HOST=rabbitmq
       - RABBIT_USER=guest
       - RABBIT_PASS=guest
+      #- EVENT_SERVICE_URL=http://ms-event-manager:8080
     ports:
       - "8081:8081"
     logging:
